@@ -54,8 +54,8 @@ init()
 	read
 
 	BOARDAFBOOT=stm32f469i-disco
-	BOARDDTB=stm32f429-disco
-	#   BOARDDTB=stm32f469-disco  future
+	BOARDDTB=stm32f469-disco
+	CONFIGFRAGMENTS=dram_0x00000000.config
     else
 	echo "$BOARD is not supported by $0 - please add support"
 	exit
@@ -194,7 +194,7 @@ kernel()
     read
 
     CFLAGS="ARCH=arm CROSS_COMPILE=arm-none-eabi- KBUILD_OUTPUT=$KERNELBUILDDIR"
-    make $CFLAGS stm32_defconfig
+    make $CFLAGS stm32_defconfig $CONFIGFRAGMENTS
     yes "" | make $CFLAGS oldconfig
     ./scripts/config --file $KERNELBUILDDIR/.config \
 	--set-str INITRAMFS_ROOT_UID 0 \
