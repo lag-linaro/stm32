@@ -7,6 +7,7 @@ KERNELDIR=""
 # Either uncomment one of the boards below, or add your own"
 BOARD=""
 #BOARD="stm32f429discovery"
+#BOARD="stm32f429discovery1"
 #BOARD="stm32f469discovery"
 
 
@@ -44,6 +45,9 @@ init()
 {
     if [ "$BOARD" == "stm32f429discovery" ]; then
 	BOARDAFBOOT=stm32f429i-disco
+	BOARDDTB=stm32f429-disco
+    elif [ "$BOARD" == "stm32f429discovery1" ]; then
+	BOARDAFBOOT=stm32f429i-disco1
 	BOARDDTB=stm32f429-disco
     elif [ "$BOARD" == "stm32f469discovery" ]; then
 	echo "###################################################"
