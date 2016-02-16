@@ -56,6 +56,16 @@ init()
 	BOARDAFBOOT=stm32f469i-disco
 	BOARDDTB=stm32f469-disco
 	CONFIGFRAGMENTS=dram_0x00000000.config
+	for fragment in $CONFIGFRAGMENTS; do
+	    file=$KERNELDIR/arch/arm/configs/$fragment
+	    if [ ! -f $file ]; then
+		echo "###################################################"
+		echo "$file is missing -- this may break your board"
+		echo "###################################################"
+		echo "Hit return to acknowledge"
+		read
+	    fi
+	done
     else
 	echo "$BOARD is not supported by $0 - please add support"
 	exit
