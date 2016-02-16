@@ -197,7 +197,8 @@ kernel()
     make $CFLAGS stm32_defconfig $CONFIGFRAGMENTS
     yes "" | make $CFLAGS oldconfig
     ./scripts/config --file $KERNELBUILDDIR/.config \
-	--set-str INITRAMFS_ROOT_UID 0 \
+	--set-val INITRAMFS_ROOT_UID 0 \
+	--set-val INITRAMFS_ROOT_GID 0 \
 	--enable BLK_DEV_INITRD \
 	--set-str INITRAMFS_SOURCE $CPIO \
 	--enable RD_GZIP \
