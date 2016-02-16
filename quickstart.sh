@@ -88,7 +88,7 @@ openocd()
 
 stlink()
 {
-    if [ "$(which st-flash)" == "" ] && [ ! -d openocd ]; then
+    if [ "$(which st-flash)" == "" ] && [ ! -d stlink ]; then
 	echo "Building STLink from source"
 	git clone https://github.com/texane/stlink.git stlink
 	cd stlink
