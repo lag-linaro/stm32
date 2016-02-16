@@ -192,9 +192,9 @@ cpio()
 
 kernel()
 {
-    KERNELBUILDDIR=build-stm32
+    KERNELBUILDDIR=$TOPDIR/build-stm32
     echo "###################################################"
-    echo "Building the kernel - output will be in $KERNELDIR/$KERNELBUILDDIR"
+    echo "Building the kernel - output will be in $KERNELBUILDDIR"
     echo "###################################################"
     cd $KERNELDIR
     BRANCH=`git branch | grep "*" | sed 's/* //'`
@@ -220,13 +220,13 @@ kernel()
 
 flash()
 {
-    DTB=$KERNELDIR/$KERNELBUILDDIR/arch/arm/boot/dts/$BOARDDTB.dtb
+    DTB=$KERNELBUILDDIR/arch/arm/boot/dts/$BOARDDTB.dtb
     echo "###################################################"
     echo "Flashing DTB ($DTB)"
     echo "###################################################"
-    st-flash --reset write $KERNELDIR/$KERNELBUILDDIR/arch/arm/boot/dts/$BOARDDTB.dtb 0x08004000
+    st-flash --reset write $KERNELBUILDDIR/arch/arm/boot/dts/$BOARDDTB.dtb 0x08004000
 
-    KERNEL=$KERNELDIR/$KERNELBUILDDIR/arch/arm/boot/xipImage
+    KERNEL=$KERNELBUILDDIR/arch/arm/boot/xipImage
     echo "###################################################"
     echo "Flashing Kernel ($KERNEL)"
     echo "###################################################"
