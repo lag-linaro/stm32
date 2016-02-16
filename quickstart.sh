@@ -73,7 +73,9 @@ openocd()
     DISTROOPENOCDCFG=$DISTROOPENOCDDIR/scripts/board/$BOARD.cfg
 
     if [ "$(which openocd)" == "" ] && [ ! -d openocd ]; then
+	echo "###################################################"
 	echo "Installing OpenOCD from source"
+	echo "###################################################"
 	git clone git://git.code.sf.net/p/openocd/code openocd
 	cd openocd
 	./bootstrap && ./configure && make && sudo make install
@@ -82,30 +84,40 @@ openocd()
 	echo "$OPENOCDCFG not found. Perhaps installed OpenOCD is out of date"
 	exit
     else
+	echo "###################################################"
 	echo "OpenOCD is already installed and appears to support your hardware"
+	echo "###################################################"
     fi
 }
 
 stlink()
 {
     if [ "$(which st-flash)" == "" ] && [ ! -d stlink ]; then
+	echo "###################################################"
 	echo "Building STLink from source"
+	echo "###################################################"
 	git clone https://github.com/texane/stlink.git stlink
 	cd stlink
 
 	./autogen.sh
 	./configure
 	make
+	echo "###################################################"
 	echo "Installing STLink"
+	echo "###################################################"
 	sudo make install
 
+	echo "###################################################"
 	echo "Installing STLink udev rules"
+	echo "###################################################"
 	sudo cp 49-stlinkv*.rules /etc/udev/rules.d
 	sudo udevadm control --reload-rules
 	sudo udevadm trigger
 	cd ..
     else
+	echo "###################################################"
 	echo "STLink is already installed"
+	echo "###################################################"
     fi
 }
 
@@ -113,7 +125,9 @@ bmcompiler()
 {
     # Bare Metal compiler
     if [ ! -d gcc-arm-none-eabi-4_9-2014q4 ]; then
+	echo "###################################################"
 	echo "Installing the Bare Metal compliler [for building Bootloader and Kernel]"
+	echo "###################################################"
 	BAREMETALTAR=gcc-arm-none-eabi-4_9-2014q4-20141203-linux.tar.bz2
 	URL=https://launchpad.net/gcc-arm-embedded/4.9/4.9-2014-q4-major/+download/$BAREMETALTAR
 	wget $URL
@@ -121,19 +135,27 @@ bmcompiler()
 	rm $BAREMETALTAR
 	PATH=$PATH:$PWD/gcc-arm-none-eabi-4_9-2014q4/bin
     else
+	echo "###################################################"
 	echo "Bare metal complier already installed"
+	echo "###################################################"
     fi
 }
 
 bootloader()
 {
     if [ ! -d afboot-stm32 ]; then
+	echo "###################################################"
 	echo "Downloading bootloader"
+	echo "###################################################"
 	git clone https://github.com/mcoquelin-stm32/afboot-stm32.git
     else
+	echo "###################################################"
 	echo "Bootloader already downloaded"
+	echo "###################################################"
     fi
+    echo "###################################################"
     echo "Building and flashing bootloader"
+    echo "###################################################"
     cd afboot-stm32
     make $BOARDAFBOOT
     make flash_$BOARDAFBOOT
@@ -145,18 +167,24 @@ cpio()
     # Pre-built userspace
     CPIO=$PWD/Stm32_mini_rootfs.cpio
     if [ ! -f Stm32_mini_rootfs.cpio ]; then
+	echo "###################################################"
 	echo "Downloading a pre-built userspace CPIO (RAMFS)"
+	echo "###################################################"
 	wget http://elinux.org/images/5/51/$CPIO.bz2
 	bunzip2 $CPIO.bz2
     else
+	echo "###################################################"
 	echo "Already have the desired CPIO"
+	echo "###################################################"
     fi
 }
 
 kernel()
 {
     KERNELBUILDDIR=build-stm32
+    echo "###################################################"
     echo "Building the kernel - output will be in $KERNELDIR/$KERNELBUILDDIR"
+    echo "###################################################"
     cd $KERNELDIR
     BRANCH=`git branch | grep "*" | sed 's/* //'`
 
@@ -181,11 +209,15 @@ kernel()
 flash()
 {
     DTB=$KERNELDIR/$KERNELBUILDDIR/arch/arm/boot/dts/$BOARDDTB.dtb
+    echo "###################################################"
     echo "Flashing DTB ($DTB)"
+    echo "###################################################"
     st-flash --reset write $KERNELDIR/$KERNELBUILDDIR/arch/arm/boot/dts/$BOARDDTB.dtb 0x08004000
 
     KERNEL=$KERNELDIR/$KERNELBUILDDIR/arch/arm/boot/xipImage
+    echo "###################################################"
     echo "Flashing Kernel ($KERNEL)"
+    echo "###################################################"
     st-flash --reset write $KERNEL 0x08008000
 }
 
