@@ -9,8 +9,6 @@ BOARD=""
 #BOARD="stm32f429discovery"
 #BOARD="stm32f469discovery"
 
-OPENOCDDIR="/usr/local/share/openocd"
-OPENOCDCFG=$OPENOCDDIR/scripts/board/$BOARD.cfg
 
 startupchecks()
 {
@@ -69,13 +67,18 @@ init()
 
 openocd()
 {
+    SELFOPENOCDDIR="/usr/local/share/openocd"
+    DISTROOPENOCDDIR="/usr/share/openocd"
+    SELFOPENOCDCFG=$SELFOPENOCDDIR/scripts/board/$BOARD.cfg
+    DISTROOPENOCDCFG=$DISTROOPENOCDDIR/scripts/board/$BOARD.cfg
+
     if [ "$(which openocd)" == "" ] && [ ! -d openocd ]; then
 	echo "Installing OpenOCD from source"
 	git clone git://git.code.sf.net/p/openocd/code openocd
 	cd openocd
 	./bootstrap && ./configure && make && sudo make install
 	cd ..
-    elif [ ! -f $OPENOCDCFG ]; then
+    elif [ ! -f $DISTROOPENOCDCFG ] && [ ! -f $SELFOPENOCDCFG ]; then
 	echo "$OPENOCDCFG not found. Perhaps installed OpenOCD is out of date"
 	exit
     else
