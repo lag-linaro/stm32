@@ -159,8 +159,12 @@ kernel()
     echo "Building the kernel - output will be in $KERNELDIR/$KERNELBUILDDIR"
     cd $KERNELDIR
     BRANCH=`git branch | grep "*" | sed 's/* //'`
-    echo -e "\nIf $BRANCH is not the correct branch Ctrl+C now, else hit return"
+
+    echo "################################################################"
+    echo "If $BRANCH is not the correct branch Ctrl+C now, else hit return"
+    echo "################################################################"
     read
+
     CFLAGS="ARCH=arm CROSS_COMPILE=arm-none-eabi- KBUILD_OUTPUT=$KERNELBUILDDIR"
     make $CFLAGS stm32_defconfig
     yes "" | make $CFLAGS oldconfig
