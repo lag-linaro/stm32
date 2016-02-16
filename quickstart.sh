@@ -97,7 +97,7 @@ stlink()
 	./configure
 	make
 	echo "Installing STLink"
-	make install 
+	sudo make install
 
 	echo "Installing STLink udev rules"
 	sudo cp 49-stlinkv*.rules /etc/udev/rules.d
