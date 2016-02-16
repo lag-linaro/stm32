@@ -175,8 +175,9 @@ bootloader()
 cpio()
 {
     # Pre-built userspace
-    CPIO=$PWD/Stm32_mini_rootfs.cpio
-    if [ ! -f Stm32_mini_rootfs.cpio ]; then
+    CPIO=Stm32_mini_rootfs.cpio
+    CPIO_FILE=$PWD/$CPIO
+    if [ ! -f $CPIO ]; then
 	echo "###################################################"
 	echo "Downloading a pre-built userspace CPIO (RAMFS)"
 	echo "###################################################"
@@ -210,7 +211,7 @@ kernel()
 	--set-val INITRAMFS_ROOT_UID 0 \
 	--set-val INITRAMFS_ROOT_GID 0 \
 	--enable BLK_DEV_INITRD \
-	--set-str INITRAMFS_SOURCE $CPIO \
+	--set-str INITRAMFS_SOURCE $CPIO_FILE \
 	--enable RD_GZIP \
 	--enable INITRAMFS_COMPRESSION_GZIP
     make $CFLAGS
