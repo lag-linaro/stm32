@@ -18,7 +18,7 @@ startupchecks()
 	exit
     fi
 
-    lsusb | grep STMicroelectronics
+    lsusb | grep STMicroelectronics > /dev/null 2>&1
     if [ $? -ne 0 ]; then
 	echo "Board not found. Is it plugged in?"
 	exit
